@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rickandmorty/bloc/authorization/authorization_bloc.dart';
+import 'package:rickandmorty/screens/BottomBar.dart';
 import 'package:rickandmorty/screens/CharactersPage.dart';
-import 'package:rickandmorty/screens/RegisterPage.dart';
+import 'package:rickandmorty/screens/authorization/RegisterPage.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({super.key});
@@ -39,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CharactersPage(),
+                  builder: (context) => BottomBar(),
                 ));
           }
           if (state is AuthorizationErrorState) {

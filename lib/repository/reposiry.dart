@@ -1,5 +1,6 @@
 
 
+
 import 'package:rickandmorty/helpers/api_requester.dart';
 import 'package:rickandmorty/models/characterModel.dart';
 import 'package:rickandmorty/models/episodeModel.dart';
@@ -8,16 +9,16 @@ import 'package:rickandmorty/models/locationModel.dart';
 class Repository {
   ApiRequester apiRequester = ApiRequester();
 
-  Future<CharacterModel> getCharacters(String page) async {
+  Future<CharacterModel> getCharacters(int page) async {
     final response =
-        await apiRequester.getResponse("/character", {"page": page});
+        await apiRequester.getResponse("/character", {"page": "$page"});
     return characterModelFromJson(response.body);
   }
 
-    Future<CharacterModel> getCharacter(String id) async {
+Future<List<Resultat>> getCharacterEpisodes(String numbers) async {
     final response =
-        await apiRequester.getResponse("/character/$id", {});
-    return characterModelFromJson(response.body);
+        await apiRequester.getResponse("/episode/$numbers", null);
+    return resultatFromJson(response.body);
   }
 
   Future<LocationModel> getLocation(String page) async {

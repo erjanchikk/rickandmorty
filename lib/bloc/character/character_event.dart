@@ -4,13 +4,8 @@ part of 'character_bloc.dart';
 sealed class CharacterEvent {}
 
 final class GetCharacters extends CharacterEvent{
-  final String page;
+  final int page;
 
   GetCharacters({required this.page});
 }
 
-final class GetCharacter extends CharacterEvent{
-  final String id;
-
-  GetCharacter({required this.id});
-}

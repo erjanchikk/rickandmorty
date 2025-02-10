@@ -89,7 +89,7 @@ class Result {
         id: json["id"],
         name: json["name"],
         status: statusValues.map[json["status"]]!,
-        species: speciesValues.map[json["species"]]!,
+        species: speciesValues.map[json["species"]]??Species.UNKNOWN,
         type: json["type"],
         gender: genderValues.map[json["gender"]]!,
         origin: json["origin"] == null ? null : Location.fromJson(json["origin"]),
@@ -119,13 +119,15 @@ class Result {
 enum Gender {
     FEMALE,
     MALE,
-    UNKNOWN
+    UNKNOWN,
+    GENDERLESS,
 }
 
 final genderValues = EnumValues({
     "Female": Gender.FEMALE,
     "Male": Gender.MALE,
-    "unknown": Gender.UNKNOWN
+    "unknown": Gender.UNKNOWN,
+    "Genderless": Gender.GENDERLESS
 });
 
 class Location {
@@ -150,12 +152,14 @@ class Location {
 
 enum Species {
     ALIEN,
-    HUMAN
+    HUMAN,
+    UNKNOWN,
 }
 
 final speciesValues = EnumValues({
     "Alien": Species.ALIEN,
-    "Human": Species.HUMAN
+    "Human": Species.HUMAN,
+    "Unknown": Species.UNKNOWN,
 });
 
 enum Status {

@@ -14,23 +14,13 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
 
       try {
         CharacterModel character = await repository.getCharacters(event.page);
-
-        emit(CharacterLoadedState(character: character));
+        
+        emit(CharacterLoadedState(character: character.results??[]));
       } catch (e) {
         emit(CharacterErrorState(error: e.toString()));
+        print(e);
       }
     });
-
-    on<GetCharacter>((event, emit) async {
-      emit(CharacterLoadingState());
-
-      try {
-        CharacterModel character = await repository.getCharacters(event.id);
-
-        emit(CharacterLoadedState(character: character));
-      } catch (e) {
-        emit(CharacterErrorState(error: e.toString()));
-      }
-    });
+    
   }
 }

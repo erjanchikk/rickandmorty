@@ -9,7 +9,7 @@ final class CharacterLoadingState extends CharacterState{
 
 }
 final class CharacterLoadedState extends CharacterState{
-  final CharacterModel character;
+  final List<Result> character;
 
   CharacterLoadedState({required this.character});
 }

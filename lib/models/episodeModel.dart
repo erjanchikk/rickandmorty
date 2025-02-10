@@ -5,12 +5,13 @@
 import 'dart:convert';
 
 EpisodeModel episodeModelFromJson(String str) => EpisodeModel.fromJson(json.decode(str));
+List<Resultat> resultatFromJson(String str) => List<Resultat>.from(json.decode(str).map((x) => Resultat.fromJson(x)));
 
 String episodeModelToJson(EpisodeModel data) => json.encode(data.toJson());
 
 class EpisodeModel {
     final Info? info;
-    final List<Result>? results;
+    final List<Resultat>? results;
 
     EpisodeModel({
         this.info,
@@ -19,7 +20,7 @@ class EpisodeModel {
 
     factory EpisodeModel.fromJson(Map<String, dynamic> json) => EpisodeModel(
         info: json["info"] == null ? null : Info.fromJson(json["info"]),
-        results: json["results"] == null ? [] : List<Result>.from(json["results"]!.map((x) => Result.fromJson(x))),
+        results: json["results"] == null ? [] : List<Resultat>.from(json["results"]!.map((x) => Resultat.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -56,7 +57,8 @@ class Info {
     };
 }
 
-class Result {
+
+class Resultat {
     final int? id;
     final String? name;
     final String? airDate;
@@ -65,7 +67,7 @@ class Result {
     final String? url;
     final DateTime? created;
 
-    Result({
+    Resultat({
         this.id,
         this.name,
         this.airDate,
@@ -75,7 +77,7 @@ class Result {
         this.created,
     });
 
-    factory Result.fromJson(Map<String, dynamic> json) => Result(
+    factory Resultat.fromJson(Map<String, dynamic> json) => Resultat(
         id: json["id"],
         name: json["name"],
         airDate: json["air_date"],
