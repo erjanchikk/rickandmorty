@@ -6,11 +6,13 @@ import 'dart:convert';
 
 CharacterModel characterModelFromJson(String str) => CharacterModel.fromJson(json.decode(str));
 
+List<Character> resultFromJson(String str) => List<Character>.from(json.decode(str).map((x) => Character.fromJson(x)));
+
 String characterModelToJson(CharacterModel data) => json.encode(data.toJson());
 
 class CharacterModel {
     final Info? info;
-    final List<Result>? results;
+    final List<Character>? results;
 
     CharacterModel({
         this.info,
@@ -19,7 +21,7 @@ class CharacterModel {
 
     factory CharacterModel.fromJson(Map<String, dynamic> json) => CharacterModel(
         info: json["info"] == null ? null : Info.fromJson(json["info"]),
-        results: json["results"] == null ? [] : List<Result>.from(json["results"]!.map((x) => Result.fromJson(x))),
+        results: json["results"] == null ? [] : List<Character>.from(json["results"]!.map((x) => Character.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -56,7 +58,7 @@ class Info {
     };
 }
 
-class Result {
+class Character {
     final int? id;
     final String? name;
     final Status? status;
@@ -70,7 +72,7 @@ class Result {
     final String? url;
     final DateTime? created;
 
-    Result({
+    Character({
         this.id,
         this.name,
         this.status,
@@ -85,13 +87,13 @@ class Result {
         this.created,
     });
 
-    factory Result.fromJson(Map<String, dynamic> json) => Result(
+    factory Character.fromJson(Map<String, dynamic> json) => Character(
         id: json["id"],
         name: json["name"],
-        status: statusValues.map[json["status"]]!,
+        status: statusValues.map[json["status"]]??Status.UNKNOWN,
         species: speciesValues.map[json["species"]]??Species.UNKNOWN,
         type: json["type"],
-        gender: genderValues.map[json["gender"]]!,
+        gender: genderValues.map[json["gender"]]??Gender.UNKNOWN,
         origin: json["origin"] == null ? null : Location.fromJson(json["origin"]),
         location: json["location"] == null ? null : Location.fromJson(json["location"]),
         image: json["image"],

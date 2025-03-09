@@ -9,3 +9,8 @@ final class GetCharacters extends CharacterEvent{
   GetCharacters({required this.page});
 }
 
+final class GetCharactersInLocation extends CharacterEvent{
+  final String numbers;
+
+  GetCharactersInLocation({required this.numbers});
+}

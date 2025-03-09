@@ -8,29 +8,28 @@ import 'package:rickandmorty/bloc/episode/episode_bloc.dart';
 import 'package:rickandmorty/helpers/utils.dart';
 
 import 'package:rickandmorty/models/characterModel.dart';
+import 'package:rickandmorty/screens/location/locationDetailsPage.dart';
 
 class CharacterDetailsPage extends StatefulWidget {
-  final Result character;
+  final Character character;
   const CharacterDetailsPage({super.key, required this.character});
   @override
   State<CharacterDetailsPage> createState() => _CharacterDetailsPageState();
 }
 
 class _CharacterDetailsPageState extends State<CharacterDetailsPage> {
-  late final EpisodeBloc bloc;
-
+  late final EpisodeBloc episodebloc;
   @override
   void initState() {
-    bloc = EpisodeBloc();
-    bloc.add(GetCharacterEpisodes(
-        numbers:
-            extractEpisodeNumbersAsString(widget.character.episode ?? [])));
+    episodebloc = EpisodeBloc();
+    episodebloc.add(GetCharacterEpisodes(
+        numbers: extractId(widget.character.episode ?? [])));
     super.initState();
   }
 
   @override
   void dispose() {
-    bloc.close();
+    episodebloc.close();
     super.dispose();
   }
 
@@ -171,76 +170,98 @@ class _CharacterDetailsPageState extends State<CharacterDetailsPage> {
                     ],
                   ),
                   20.verticalSpace,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Origin",
-                              style: TextStyle(
-                                  color: Color(0xff5B6975),
-                                  fontSize: 12.sp,
-                                  letterSpacing: 0.5,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                            Text(
-                              widget.character.origin!.name.toString(),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14.sp,
-                                  letterSpacing: 0.5,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ],
+                  InkWell(
+                    onTap: () {
+                      String id =
+                          extractId([widget.character.origin!.url.toString()]);
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LocationDetailsPage(id: id),
                         ),
-                      ),
-                      IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.arrow_forward_ios,
-                            color: Colors.white,
-                            size: 17.r,
-                          ))
-                    ],
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Origin",
+                                style: TextStyle(
+                                    color: Color(0xff5B6975),
+                                    fontSize: 12.sp,
+                                    letterSpacing: 0.5,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              Text(
+                                widget.character.origin!.name.toString(),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14.sp,
+                                    letterSpacing: 0.5,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: Colors.white,
+                          size: 17.r,
+                        ),
+                      ],
+                    ),
                   ),
                   24.verticalSpace,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Location",
-                              style: TextStyle(
-                                  color: Color(0xff5B6975),
-                                  fontSize: 12.sp,
-                                  letterSpacing: 0.5,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                            Text(
-                              widget.character.location!.name.toString(),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14.sp,
-                                  letterSpacing: 0.5,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ],
+                  InkWell(
+                    onTap: () {
+                      String id =
+                          extractId([widget.character.origin!.url.toString()]);
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LocationDetailsPage(id: id),
                         ),
-                      ),
-                      IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.arrow_forward_ios,
-                            color: Colors.white,
-                            size: 17.r,
-                          ))
-                    ],
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Location",
+                                style: TextStyle(
+                                    color: Color(0xff5B6975),
+                                    fontSize: 12.sp,
+                                    letterSpacing: 0.5,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              Text(
+                                widget.character.location!.name.toString(),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14.sp,
+                                    letterSpacing: 0.5,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: Colors.white,
+                          size: 17.r,
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -277,20 +298,19 @@ class _CharacterDetailsPageState extends State<CharacterDetailsPage> {
                     ],
                   ),
                   BlocBuilder(
-                    bloc: bloc,
+                    bloc: episodebloc,
                     builder: (context, state) {
                       if (state is EpisodeLoadingState) {
-                        return Center(child: CupertinoActivityIndicator());
+                        return const Center(child: CupertinoActivityIndicator(color: Colors.white,));
                       } else if (state is EpisodeLoadedState) {
                         return ListView.separated(
                           physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: state.episode.length,
-                          separatorBuilder: (_, __) =>
-                              SizedBox(height: 24.r),
+                          separatorBuilder: (_, __) => SizedBox(height: 24.r),
                           itemBuilder: (BuildContext context, int index) {
                             final episode = state.episode[index];
-                        
+
                             return ListTile(
                               contentPadding:
                                   EdgeInsets.symmetric(horizontal: 10),
@@ -326,9 +346,7 @@ class _CharacterDetailsPageState extends State<CharacterDetailsPage> {
                               ),
                               trailing: Icon(Icons.arrow_forward_ios,
                                   color: Colors.white, size: 17.r),
-                              onTap: () {
-                                
-                              },
+                              onTap: () {},
                             );
                           },
                         );

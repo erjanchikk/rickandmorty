@@ -6,11 +6,13 @@ import 'dart:convert';
 
 LocationModel locationModelFromJson(String str) => LocationModel.fromJson(json.decode(str));
 
+List<ResultLocation> locationFromJson(String str) => List<ResultLocation>.from(json.decode(str).map((x) => ResultLocation.fromJson(x)));
+
 String locationModelToJson(LocationModel data) => json.encode(data.toJson());
 
 class LocationModel {
     final Info? info;
-    final List<Result>? results;
+    final List<ResultLocation>? results;
 
     LocationModel({
         this.info,
@@ -19,7 +21,7 @@ class LocationModel {
 
     factory LocationModel.fromJson(Map<String, dynamic> json) => LocationModel(
         info: json["info"] == null ? null : Info.fromJson(json["info"]),
-        results: json["results"] == null ? [] : List<Result>.from(json["results"]!.map((x) => Result.fromJson(x))),
+        results: json["results"] == null ? [] : List<ResultLocation>.from(json["results"]!.map((x) => ResultLocation.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -56,7 +58,7 @@ class Info {
     };
 }
 
-class Result {
+class ResultLocation {
     final int? id;
     final String? name;
     final String? type;
@@ -65,7 +67,7 @@ class Result {
     final String? url;
     final DateTime? created;
 
-    Result({
+    ResultLocation({
         this.id,
         this.name,
         this.type,
@@ -75,7 +77,7 @@ class Result {
         this.created,
     });
 
-    factory Result.fromJson(Map<String, dynamic> json) => Result(
+    factory ResultLocation.fromJson(Map<String, dynamic> json) => ResultLocation(
         id: json["id"],
         name: json["name"],
         type: json["type"],

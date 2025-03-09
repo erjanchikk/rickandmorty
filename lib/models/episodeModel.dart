@@ -5,13 +5,13 @@
 import 'dart:convert';
 
 EpisodeModel episodeModelFromJson(String str) => EpisodeModel.fromJson(json.decode(str));
-List<Resultat> resultatFromJson(String str) => List<Resultat>.from(json.decode(str).map((x) => Resultat.fromJson(x)));
+List<Episode> resultatFromJson(String str) => List<Episode>.from(json.decode(str).map((x) => Episode.fromJson(x)));
 
 String episodeModelToJson(EpisodeModel data) => json.encode(data.toJson());
 
 class EpisodeModel {
     final Info? info;
-    final List<Resultat>? results;
+    final List<Episode>? results;
 
     EpisodeModel({
         this.info,
@@ -20,7 +20,7 @@ class EpisodeModel {
 
     factory EpisodeModel.fromJson(Map<String, dynamic> json) => EpisodeModel(
         info: json["info"] == null ? null : Info.fromJson(json["info"]),
-        results: json["results"] == null ? [] : List<Resultat>.from(json["results"]!.map((x) => Resultat.fromJson(x))),
+        results: json["results"] == null ? [] : List<Episode>.from(json["results"]!.map((x) => Episode.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -58,7 +58,7 @@ class Info {
 }
 
 
-class Resultat {
+class Episode {
     final int? id;
     final String? name;
     final String? airDate;
@@ -67,7 +67,7 @@ class Resultat {
     final String? url;
     final DateTime? created;
 
-    Resultat({
+    Episode({
         this.id,
         this.name,
         this.airDate,
@@ -77,7 +77,7 @@ class Resultat {
         this.created,
     });
 
-    factory Resultat.fromJson(Map<String, dynamic> json) => Resultat(
+    factory Episode.fromJson(Map<String, dynamic> json) => Episode(
         id: json["id"],
         name: json["name"],
         airDate: json["air_date"],

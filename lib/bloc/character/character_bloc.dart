@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:rickandmorty/models/characterModel.dart';
-import 'package:rickandmorty/repository/reposiry.dart';
+import 'package:rickandmorty/repositorys/characterRepository.dart';
+
 
 part 'character_event.dart';
 part 'character_state.dart';
@@ -19,6 +20,17 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
       } catch (e) {
         emit(CharacterErrorState(error: e.toString()));
         print(e);
+      }
+    });
+    on<GetCharactersInLocation>((event, emit) async {
+      emit(CharacterLoadingState());
+
+      try {
+        List<Character> character = await repository.getCharactersInLocation(event.numbers);
+        
+        emit(CharacterLoadedState(character: character));
+      } catch (e) {
+        emit(CharacterErrorState(error: e.toString()));
       }
     });
     

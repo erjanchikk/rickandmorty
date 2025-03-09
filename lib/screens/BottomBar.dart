@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:rickandmorty/screens/CharactersPage.dart';
-import 'package:rickandmorty/screens/EpisodePage.dart';
-import 'package:rickandmorty/screens/LocationPage.dart';
+import 'episode/EpisodePage.dart';
 import 'package:rickandmorty/screens/SettingsPage.dart';
+
+import 'character/charactersPage.dart';
+import 'location/locationPage.dart';
 
 class BottomBar extends StatefulWidget {
   const BottomBar({super.key});

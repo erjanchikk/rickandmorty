@@ -5,9 +5,9 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:rickandmorty/bloc/character/character_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rickandmorty/models/characterModel.dart';
-import 'package:rickandmorty/screens/CharacterDetailsPage.dart';
 
-import '../helpers/utils.dart';
+import '../../helpers/utils.dart';
+import 'characterDetailsPage.dart';
 
 class CharactersPage extends StatefulWidget {
   const CharactersPage({super.key});
@@ -17,7 +17,7 @@ class CharactersPage extends StatefulWidget {
 }
 
 class _CharacterDetailsPageState extends State<CharactersPage> {
-  late final PagingController<int, Result> pagingController;
+  late final PagingController<int, Character> pagingController;
   late final CharacterBloc characterBloc;
   late final TextEditingController controller;
   bool isList = true;
@@ -133,7 +133,7 @@ class _CharacterDetailsPageState extends State<CharactersPage> {
                         ],
                       ),
                       Expanded(
-                        child: PagedGridView<int, Result>(
+                        child: PagedGridView<int, Character>(
                           pagingController: pagingController,
                           builderDelegate: PagedChildBuilderDelegate(
                             itemBuilder: (context, item, index) {

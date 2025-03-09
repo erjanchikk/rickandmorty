@@ -7,6 +7,5 @@ class ApiRequester {
       String path, Map<String, dynamic>? queryParameters) async {
     Uri url = Uri.https(host, "/api$path", queryParameters);
     return await http.get(url);
-    
   }
 }

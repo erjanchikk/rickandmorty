@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rickandmorty/bloc/authorization/authorization_bloc.dart';
 
+import '../../widgets/customTextFeild.dart';
+
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
   @override
@@ -10,9 +12,9 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController controllerEmail = TextEditingController();
-
   final TextEditingController controllerPassword = TextEditingController();
-
+  final TextEditingController controllerFirstName = TextEditingController();
+  final TextEditingController controllerLastName = TextEditingController();
   final AuthorizationBloc bloc = AuthorizationBloc();
 
   bool obscureText = true;
@@ -49,6 +51,34 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               40.verticalSpace,
               Text(
+                "First name",
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14.r,
+                ),
+              ),
+              8.verticalSpace,
+              CustomTextFeild(
+                  controller: controllerFirstName,
+                  text: 'First name',
+                ),
+              10.verticalSpace,
+              Text(
+                "Last name",
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14.r,
+                ),
+              ),
+              8.verticalSpace,
+              CustomTextFeild(
+                  controller: controllerLastName,
+                  text: 'Last name',
+                ),
+              36.verticalSpace,
+              Divider(),
+              36.verticalSpace,
+              Text(
                 "Email",
                 style: TextStyle(
                   fontWeight: FontWeight.w400,
@@ -56,34 +86,10 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ),
               8.verticalSpace,
-              SizedBox(
-                height: 48.r,
-                width: 319.r,
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: "Email",
-                    hintStyle: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14.r,
-                    ),
-                    prefixIcon: Icon(Icons.person_2_outlined),
-                    filled: true,
-                    fillColor: Color(0xffF2F2F2),
-                    border: InputBorder.none,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 12.r, horizontal: 16.r),
-                  ),
+              CustomTextFeild(
                   controller: controllerEmail,
+                  text: 'Email',
                 ),
-              ),
               10.verticalSpace,
               Text(
                 "Password",
@@ -94,7 +100,6 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               8.verticalSpace,
               SizedBox(
-
                 child: TextField(
                   obscureText: obscureText,
                   decoration: InputDecoration(
@@ -135,7 +140,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 12.r, horizontal: 16.r),
                   ),
-                   onChanged: _validatePassword,
+                  onChanged: _validatePassword,
                   controller: controllerPassword,
                 ),
               ),
@@ -155,40 +160,43 @@ class _RegisterPageState extends State<RegisterPage> {
                     if (_isPasswordValid) {
                       bloc.add(Register(
                         email: controllerEmail.text,
-                        password: controllerPassword.text));
+                        password: controllerPassword.text,
+                        firstname: controllerFirstName.text,
+                        lastname: controllerLastName.text,
+                      ));
                       Navigator.pop(context);
-                    }
-                    else{
-                       showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: const Text("Error"),
-                  content: const Text("Incorrect login or password entered"),
-                  actions: [
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          side: const BorderSide(
-                            color: Color(0xff22A2BD),
-                            width: 2,
-                          ),
-                          foregroundColor: Color(0xff22A2BD),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context); 
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text("Error"),
+                            content: const Text(
+                                "Incorrect login or password entered"),
+                            actions: [
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    side: const BorderSide(
+                                      color: Color(0xff22A2BD),
+                                      width: 2,
+                                    ),
+                                    foregroundColor: Color(0xff22A2BD),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text("Ok"),
+                                ),
+                              ),
+                            ],
+                          );
                         },
-                        child: const Text("Ok"),
-                      ),
-                    ),
-                  ],
-                );
-              },
-            );
+                      );
                     }
                   },
                   child: Text(

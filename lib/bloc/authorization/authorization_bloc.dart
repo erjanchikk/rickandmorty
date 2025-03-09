@@ -1,7 +1,9 @@
+import 'dart:math';
+
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
-import 'package:rickandmorty/helpers/pref_keys.dart';
 import 'package:rickandmorty/helpers/save_provider.dart';
 
 part 'authorization_event.dart';
@@ -16,8 +18,18 @@ class AuthorizationBloc extends Bloc<AuthorizationEvent, AuthorizationState> {
           email: event.email,
           password: event.password,
         );
-        print(authCredential);
-        print("Вы успешно зарегистрировались!");
+        User? user = authCredential.user;
+
+        if (user !=null) {
+          await Future.wait([
+            user.updateDisplayName(event.firstname),
+            FirebaseFirestore.instance.collection("users").doc(user.uid).set({
+              "firstName": event.firstname,
+              "lastName": event.lastname,
+              "email": event.email,
+            },)
+          ]);
+        }
       } catch (e) {
         emit(AuthorizationErrorState(error: e.toString()));
       }
@@ -33,7 +45,6 @@ class AuthorizationBloc extends Bloc<AuthorizationEvent, AuthorizationState> {
         SaveProvider().saveUser(authCredential.user!.email!);
 
         emit(AuthorizationSuccessState());
-        print("Авторизация прошла успешна!");
       } catch (e) {
         emit(AuthorizationErrorState(error: e.toString()));
       }

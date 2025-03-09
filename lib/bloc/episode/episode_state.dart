@@ -9,7 +9,7 @@ final class EpisodeLoadingState extends EpisodeState{
 
 }
 final class EpisodeLoadedState extends EpisodeState{
-  final List<Resultat> episode;
+  final List<Episode> episode;
 
   EpisodeLoadedState({required this.episode});
 }

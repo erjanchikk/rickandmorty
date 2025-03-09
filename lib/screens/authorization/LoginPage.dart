@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rickandmorty/bloc/authorization/authorization_bloc.dart';
-import 'package:rickandmorty/screens/BottomBar.dart';
-import 'package:rickandmorty/screens/CharactersPage.dart';
+import 'package:rickandmorty/screens/bottomBar.dart';
 import 'package:rickandmorty/screens/authorization/RegisterPage.dart';
 
+import '../../widgets/customTextFeild.dart';
+import '../../widgets/dialogs/errorShowDialog.dart';
+
 class LoginPage extends StatefulWidget {
-  LoginPage({super.key});
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -16,10 +18,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   late final TextEditingController controllerEmail;
   late final TextEditingController controllerPassword;
-
   late final AuthorizationBloc bloc;
-
   bool obscureText = true;
+
 
   @override
   void initState() {
@@ -44,41 +45,12 @@ class _LoginPageState extends State<LoginPage> {
                 ));
           }
           if (state is AuthorizationErrorState) {
-            showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: const Text("Error"),
-                  content: const Text("Incorrect login or password entered"),
-                  actions: [
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          side: const BorderSide(
-                            color: Color(0xff22A2BD),
-                            width: 2,
-                          ),
-                          foregroundColor: Color(0xff22A2BD),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Text("Ok"),
-                      ),
-                    ),
-                  ],
-                );
-              },
-            );
+            errorShowDialog(context);
           }
         },
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(ScreenUtil().setSp(28)),
+            padding: EdgeInsets.all(28.r),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,33 +70,9 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 8.verticalSpace,
-                SizedBox(
-                  height: 48.r,
-                  width: 319.r,
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: "Email",
-                      hintStyle: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14.r,
-                      ),
-                      prefixIcon: Icon(Icons.person_2_outlined),
-                      filled: true,
-                      fillColor: Color(0xffF2F2F2),
-                      border: InputBorder.none,
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 12.r, horizontal: 16.r),
-                    ),
-                    controller: controllerEmail,
-                  ),
+                CustomTextFeild(
+                  controller: controllerEmail,
+                  text: 'Email',
                 ),
                 10.verticalSpace,
                 Text(
@@ -135,43 +83,15 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 8.verticalSpace,
-                SizedBox(
-                  height: 48.r,
-                  width: 319.r,
-                  child: TextField(
-                    obscureText: obscureText,
-                    decoration: InputDecoration(
-                      hintText: "Password",
-                      hintStyle: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16.r,
-                      ),
-                      prefixIcon: Icon(Icons.lock_outline),
-                      suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              obscureText = !obscureText;
-                            });
-                          },
-                          icon: Icon(obscureText
-                              ? Icons.remove_red_eye_outlined
-                              : Icons.remove_red_eye)),
-                      filled: true,
-                      fillColor: Color(0xffF2F2F2),
-                      border: InputBorder.none,
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 12.r, horizontal: 16.r),
-                    ),
-                    controller: controllerPassword,
-                  ),
+                CustomTextFeild(
+                  obscureText: obscureText,
+                  controller: controllerPassword,
+                  onPressed: () {
+                    setState(() {
+                      obscureText = !obscureText;
+                    });
+                  },
+                  text: 'Password',
                 ),
                 24.verticalSpace,
                 SizedBox(
@@ -239,3 +159,5 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+
+
